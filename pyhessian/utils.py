@@ -59,16 +59,14 @@ def normalization(v):
 
 
 def get_params_grad(model):
-    """
-    get model parameters and corresponding gradients
-    """
     params = []
     grads = []
     for param in model.parameters():
-        if not param.requires_grad or param.grad is None:
+        if not param.requires_grad:
             continue
         params.append(param)
-        grads.append(param.grad + 0.)
+        grads.append(param.grad.clone() if param.grad is not None
+                     else torch.zeros_like(param))
     return params, grads
 
 
@@ -83,7 +81,8 @@ def hessian_vector_product(gradsH, params, v):
                              params,
                              grad_outputs=v,
                              only_inputs=True,
-                             retain_graph=True)
+                             retain_graph=True,
+                             allow_unused=True)
     return hv
 
 
