@@ -79,8 +79,7 @@ class hessian():
                                      params,
                                      grad_outputs=v,
                                      only_inputs=True,
-                                     retain_graph=False,
-                                     allow_unused=True)
+                                     retain_graph=False)
             THv = [
                 THv1 + Hv1 * float(tmp_num_data) + 0.
                 for THv1, Hv1 in zip(THv, Hv)
